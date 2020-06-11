@@ -30,17 +30,17 @@ class login(Page):
 
     # 定位器，通过元素属性定位元素对象
     # 手机号输入框
-    login_phone_loc = (By.ID,testData.get_elementinfo(1))
+    login_phone_loc = (By.NAME,testData.get_elementinfo(1))
     # 密码输入框
-    login_password_loc = (By.ID,testData.get_elementinfo(2))
+    login_password_loc = (By.NAME,testData.get_elementinfo(2))
     # 取消自动登录
-    keeplogin_button_loc = (By.XPATH,testData.get_elementinfo(3))
+    # keeplogin_button_loc = (By.XPATH,testData.get_elementinfo(3))
     # 单击登录
-    login_user_loc = (By.XPATH,testData.get_elementinfo(4))
+    login_user_loc = (By.XPATH,testData.get_elementinfo(3))
     # 退出登录
-    login_exit_loc = (By.ID, testData.get_elementinfo(5))
+    login_exit_loc = (By.XPATH, testData.get_elementinfo(4))
     # 选择退出
-    login_exit_button_loc = (By.XPATH,testData.get_elementinfo(6))
+    login_exit_button_loc = (By.XPATH,testData.get_elementinfo(5))
 
     def login_phone(self,phone):
         """
@@ -58,12 +58,12 @@ class login(Page):
         """
         self.find_element(*self.login_password_loc).send_keys(password)
 
-    def keeplogin(self):
-        """
-        取消单选自动登录
-        :return:
-        """
-        self.find_element(*self.keeplogin_button_loc).click()
+    # def keeplogin(self):
+    #     """
+    #     取消单选自动登录
+    #     :return:
+    #     """
+    #     self.find_element(*self.keeplogin_button_loc).click()
 
     def login_button(self):
         """
@@ -94,13 +94,14 @@ class login(Page):
         self.login_phone(phone)
         self.login_password(password)
         sleep(1)
-        self.keeplogin()
-        sleep(1)
+        # self.keeplogin()
+        # sleep(1)
         self.login_button()
         sleep(1)
 
     phone_pawd_error_hint_loc = (By.XPATH,testData.get_CheckElementinfo(0))
-    user_login_success_loc = (By.ID,testData.get_CheckElementinfo(1))
+    move_to_element = (By.XPATH,testData.get_CheckElementinfo(3))
+    user_login_success_loc = (By.XPATH,testData.get_CheckElementinfo(1))
     exit_login_success_loc = (By.ID,testData.get_CheckElementinfo(2))
 
     # 手机号或密码错误提示
@@ -109,8 +110,10 @@ class login(Page):
 
     # 登录成功用户名
     def user_login_success_hint(self):
+        self.move_to_loc_element(*self.move_to_element)
         return self.find_element(*self.user_login_success_loc).text
 
     # 退出登录
     def exit_login_success_hint(self):
+        # self.move_to_loc_element(*self.move_to_element)
         return self.find_element(*self.exit_login_success_loc).text

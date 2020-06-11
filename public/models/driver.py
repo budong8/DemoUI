@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
-__author__ = 'YinJia'
 
 
 from selenium.webdriver import Remote
+import warnings
+from selenium import webdriver
+
 
 def browser():
     """
@@ -11,7 +13,8 @@ def browser():
     :return: 返回浏览器驱动URL
     """
     try:
-        host = '127.0.0.1:4444'
+        warnings.simplefilter('ignore',ResourceWarning)
+        host = '127.94.0.1:4444'
         driver = Remote(command_executor='http://' + host + '/wd/hub',
                         desired_capabilities={ 'platform': 'ANY',
                                                'browserName': 'chrome',
@@ -19,6 +22,7 @@ def browser():
                                                'javascriptEnabled': True
                                             }
                         )
+        # driver = webdriver.Chrome()
         return driver
     except Exception as msg:
         print("驱动异常-> {0}".format(msg))

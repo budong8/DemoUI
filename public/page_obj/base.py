@@ -1,27 +1,33 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
-__author__ = 'YinJia'
 
-import os,sys
+
+import os, sys
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from config import setting
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchFrameException,NoSuchWindowException,NoAlertPresentException,NoSuchElementException
+from selenium.common.exceptions import NoSuchFrameException, NoSuchWindowException, NoAlertPresentException, \
+    NoSuchElementException
 import configparser
 from public.models.log import Log
+from selenium.webdriver.common.action_chains import ActionChains
+
 
 con = configparser.ConfigParser()
-con.read(setting.CONFIG_DIR,encoding='utf-8')
+con.read(setting.CONFIG_DIR, encoding='utf-8')
 # --------- 读取config.ini配置文件 ---------------
-login_url = con.get("WebURL","URL")
+login_url = con.get("WebURL", "URL")
 log = Log()
+
 
 class Page(object):
     """
     基础类，用于页面对象类的继承
     """
-    def __init__(self,selenium_driver,base_url=login_url,parent=None):
+
+    def __init__(self, selenium_driver, base_url=login_url, parent=None):
         self.base_url = base_url
         self.driver = selenium_driver
         self.parent = parent
@@ -34,7 +40,7 @@ class Page(object):
         """
         return self.driver.current_url == (self.base_url + self.url)
 
-    def _open(self,url):
+    def _open(self, url):
         """
         打开浏览器URL访问
         :param url: URL地址
@@ -42,7 +48,7 @@ class Page(object):
         """
         url = self.base_url + url
         self.driver.get(url)
-        assert self.on_page(),'Did not land on %s' % url
+        assert self.on_page(), 'Did not land on %s' % url
 
     def open(self):
         """
@@ -51,7 +57,7 @@ class Page(object):
         """
         self._open(self.url)
 
-    def find_element(self,*loc):
+    def find_element(self, *loc):
         """
         单个元素定位
         :param loc: 传入元素属性
@@ -61,9 +67,9 @@ class Page(object):
             WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(loc))
             return self.driver.find_element(*loc)
         except:
-            log.error("{0}页面中未能找到{1}元素".format(self,loc))
+            log.error("{0}页面中未能找到{1}元素".format(self, loc))
 
-    def find_elements(self,*loc):
+    def find_elements(self, *loc):
         """
         多个元素定位
         :param loc: 传入元素属性
@@ -73,9 +79,20 @@ class Page(object):
             WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(loc))
             return self.driver.find_elements(*loc)
         except:
-            log.error("{0}页面中未能找到{1}元素".format(self,loc))
+            log.error("{0}页面中未能找到{1}元素".format(self, loc))
 
-    def script(self,src):
+    def move_to_loc_element(self, *loc):
+        """
+        :param loc:
+        :return:
+        """
+        try:
+            move = self.driver.find_element(*loc)
+            ActionChains(self.driver).move_to_element(move).perform()
+        except:
+            log.error("{0}页面中未能找到{1}元素".format(self, loc))
+
+    def script(self, src):
         """
         提供调用JavaScript方法
         :param src: 脚本文件
@@ -106,7 +123,7 @@ class Page(object):
         except NoSuchFrameException as msg:
             log.error("查找iframe异常-> {0}".format(msg))
 
-    def switch_windows(self,loc):
+    def switch_windows(self, loc):
         """
         多窗口切换
         :param loc:
