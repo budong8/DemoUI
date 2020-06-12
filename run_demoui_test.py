@@ -26,7 +26,7 @@ def run_case(all_case, result_path=setting.TEST_REPORT):
     filename = result_path + '/' + now + 'result.html'
     fp = open(filename, 'wb')
     runner = HTMLTestRunner(stream=fp, title='抽屉新热榜UI自动化测试报告',
-                            description='环境：windows 7 浏览器：chrome',
+                            description='环境：mac 浏览器：chrome',
                             tester='mbc')
     runner.run(all_case)
     fp.close()

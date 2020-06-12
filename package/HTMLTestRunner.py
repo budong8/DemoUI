@@ -716,7 +716,7 @@ class _TestResult(TestResult):
         else:
             sys.stderr.write('F')
 
-# 增加tester  -- YinJia
+# 增加tester
 class HTMLTestRunner(Template_mixin):
     """
     """
@@ -764,7 +764,7 @@ class HTMLTestRunner(Template_mixin):
         r = [(cls, rmap[cls]) for cls in classes]
         return r
 
-    #增加passrate通过率  --YinJia
+    #增加passrate通过率
     def getReportAttributes(self, result):
         """
         Return report attributes as a list of (name, value).
@@ -812,7 +812,7 @@ class HTMLTestRunner(Template_mixin):
     def _generate_stylesheet(self):
         return self.STYLESHEET_TMPL
 
-    #增加tester  --YinJia
+    #增加tester
     def _generate_heading(self, report_attrs):
         a_lines = []
         for name, value in report_attrs:
@@ -862,7 +862,7 @@ class HTMLTestRunner(Template_mixin):
 
             for tid, (n,t,o,e) in enumerate(cls_results):
                 self._generate_report_test(rows, cid, tid, n, t, o, e)
-        #增加passrate   --YinJia
+        #增加passrate
         report = self.REPORT_TMPL % dict(
             test_list = ''.join(rows),
             count = str(result.success_count + result.failure_count + result.error_count),
